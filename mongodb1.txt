@@ -1,0 +1,158 @@
+C:\Users\Hemanth Amilineni>docker run -d --name mongodb -p 27017:27017 ^
+More? -e MONGO_INITDB_ROOT_USERNAME=admin ^
+More? -e MONGO_INITDB_ROOT_PASSWORD=admin123 ^
+More? -v mongodb_data:/data/db ^
+More? mongo:8.0
+Unable to find image 'mongo:8.0' locally
+8.0: Pulling from library/mongo
+eedb5e3e5b38: Pull complete
+59898ec81c6b: Pull complete
+a60ef8ec184e: Pull complete
+2252b895f5de: Pull complete
+cfbbec1d5328: Pull complete
+f97373a3dd33: Pull complete
+c4a88db82a6d: Pull complete
+08f85ec03d22: Pull complete
+b45570b54f6f: Download complete
+15035395e153: Download complete
+Digest: sha256:d0d926f94df099bff534b7ee5b5986458131a22489dfff8664509af0c1e2ca9c
+Status: Downloaded newer image for mongo:8.0
+007d11f0d2c4047570903e7dd1aab29b03f71c7b3d554574f8cf570d01388ad4
+
+C:\Users\Hemanth Amilineni>docker start mongodb
+mongodb
+
+C:\Users\Hemanth Amilineni>docker exec -it monogodb mongosh -u admin -p admin123
+Error response from daemon: No such container: monogodb
+
+What's next:
+    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug monogodb
+    Learn more at https://docs.docker.com/go/debug-cli/
+
+C:\Users\Hemanth Amilineni>docker exec -it mongodb mongosh -u admin -p admin1233
+Current Mongosh Log ID: 6ac8726fd94760a43d6d5da4
+Connecting to:          mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.12.0
+MongoServerError: Authentication failed.
+
+What's next:
+    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug mongodb
+    Learn more at https://docs.docker.com/go/debug-cli/
+
+C:\Users\Hemanth Amilineni>docker exec -it mongodb mongosh -u admin -p admin123
+Current Mongosh Log ID: 6ac87317ea1df55cb7672580
+Connecting to:          mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.12.0
+Using MongoDB:          8.0.32
+Using Mongosh:          2.12.0
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+
+To help improve our products, pseudo-anonymous usage data is collected from interactive and agentic sessions only, and sent to MongoDB periodically (https://www.mongodb.com/legal/privacy-policy).
+You can opt-out by running the disableTelemetry() command.
+
+------
+   The server generated these startup warnings when booting
+   2026-10-09T04:46:33.580+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2026-10-09T04:46:34.178+00:00: For customers running the current memory allocator, we suggest changing the contents of the following sysfsFile
+   2026-10-09T04:46:34.178+00:00: For customers running the current memory allocator, we suggest changing the contents of the following sysfsFile
+   2026-10-09T04:46:34.178+00:00: We suggest setting the contents of sysfsFile to 0.
+   2026-10-09T04:46:34.178+00:00: We suggest setting swappiness to 0 or 1, as swapping can cause performance problems.
+------
+
+test> use studentsdb
+switched to db studentsdb
+studentsdb> db.createCollection("CSE")
+{ ok: 1 }
+studentsdb> show collections CSE
+CSE
+studentsdb> db.CSE.insertOne({
+| name:"Hemanth",
+| age:19
+| })
+{
+  acknowledged: true,
+  insertedId: ObjectId('6ac87690ea1df55cb7672581')
+}
+studentsdb> db.CSE.insertMany([
+| {name:"Chandu", age:19},
+| {name:"Chiru",age:20},
+| {name:"Ganesh",age:18}
+| ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6ac87760ea1df55cb7672582'),
+    '1': ObjectId('6ac87760ea1df55cb7672583'),
+    '2': ObjectId('6ac87760ea1df55cb7672584')
+  }
+}
+studentsdb> db.CSE.find()
+[
+  { _id: ObjectId('6ac87690ea1df55cb7672581'), name: 'Hemanth', age: 19 },
+  { _id: ObjectId('6ac87760ea1df55cb7672582'), name: 'Chandu', age: 19 },
+  { _id: ObjectId('6ac87760ea1df55cb7672583'), name: 'Chiru', age: 20 },
+  { _id: ObjectId('6ac87760ea1df55cb7672584'), name: 'Ganesh', age: 18 }
+]
+studentsdb> db.CSE.find({age:19})
+[
+  { _id: ObjectId('6ac87690ea1df55cb7672581'), name: 'Hemanth', age: 19 },
+  { _id: ObjectId('6ac87760ea1df55cb7672582'), name: 'Chandu', age: 19 }
+]
+studentsdb>  db.students.find().sort({age : 1})
+
+studentsdb>  db..find().sort({age : 1})
+studentsdb> db.CSE.find.sort({age:1})
+TypeError: db.CSE.find.sort is not a function
+studentsdb>  db.CSE.find().sort({age : 1})
+[
+  { _id: ObjectId('6ac87760ea1df55cb7672584'), name: 'Ganesh', age: 18 },
+  { _id: ObjectId('6ac87690ea1df55cb7672581'), name: 'Hemanth', age: 19 },
+  { _id: ObjectId('6ac87760ea1df55cb7672582'), name: 'Chandu', age: 19 },
+  { _id: ObjectId('6ac87760ea1df55cb7672583'), name: 'Chiru', age: 20 }
+]
+studentsdb>  db.CSE.find().sort({age : -1})
+[
+  { _id: ObjectId('6ac87760ea1df55cb7672583'), name: 'Chiru', age: 20 },
+  { _id: ObjectId('6ac87690ea1df55cb7672581'), name: 'Hemanth', age: 19 },
+  { _id: ObjectId('6ac87760ea1df55cb7672582'), name: 'Chandu', age: 19 },
+  { _id: ObjectId('6ac87760ea1df55cb7672584'), name: 'Ganesh', age: 18 }
+]
+studentsdb> db.CSE.find({}, { name: 1,age: 1, _id: 0}).limit(2)
+[ { name: 'Hemanth', age: 19 }, { name: 'Chandu', age: 19 } ]
+studentsdb> db.CSE.find({}, { name: 1,age: 1, _id: 0}).skip(2)
+[ { name: 'Chiru', age: 20 }, { name: 'Ganesh', age: 18 } ]
+studentsdb> db.CSE.updateMany(
+| {age:20},
+| {$set:{age:21}}
+| )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+studentsdb> db.CSE.updateMany( { age: 20 }, { $set: { age: 19 } } )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+studentsdb> db.students.updateOne({name:"chandu"},{$set: {age:22}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+studentsdb> db.CSE.find()
+[
+  { _id: ObjectId('6ac87690ea1df55cb7672581'), name: 'Hemanth', age: 19 },
+  { _id: ObjectId('6ac87760ea1df55cb7672582'), name: 'Chandu', age: 19 },
+  { _id: ObjectId('6ac87760ea1df55cb7672583'), name: 'Chiru', age: 21 },
+  { _id: ObjectId('6ac87760ea1df55cb7672584'), name: 'Ganesh', age: 18 }
+]
+studentsdb>
