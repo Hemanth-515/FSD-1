@@ -4,7 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 const patients = [];
 const app = express();
-const port=6000;
+const port = process.env.PORT || 6000;
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
